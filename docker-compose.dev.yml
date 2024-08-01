@@ -1,0 +1,40 @@
+services:
+  client:
+    build: ./client
+    ports:
+        - 3030:3000
+    command: npm run start
+    volumes:
+        - ./client/public:/app/public/   
+        - ./client/src:/app/src/
+    # sparadrap pour faire fonctionner le hot reload
+    environment:
+    # le serveur doit se connecter sur localhost
+      - WDS_SOCKET=127.0.0.1
+    # active la lib chokidar pour surveiller les changements
+      - CHOKIDAR_USEPOLLING=true
+    # active également la surveillance de changements pour watchpack
+      - WATCHPACK_POLLING=true
+    # "polling" = pollinisation
+  server:
+    # image: express-docker
+    build: ./server
+    ports:
+      - 5050:5000
+    command: npm run dev
+    volumes:
+      - ./server/src/:/app/src/
+    environment:
+      - WDS_SOCKET=127.0.0.1
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+  mongodb:
+    image: mongo
+    volumes:
+      - ./data:/data/db
+
+    # docker compose up
+    # pour lancer la compilation et démarrer les conteneurs :
+    # docker compose -f docker-compose.dev.yml up
+    # si on a fait une modification dans les fichers js et package.json faut lancer la compilation --build
+    # docker compose -f docker-compose.dev.yml up --build

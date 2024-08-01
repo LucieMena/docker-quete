@@ -1,0 +1,14 @@
+services:
+    server:
+        # image: express-docker
+        build : ./server
+        ports:
+            - 5050:5000
+    mongodb:
+        image: mongo
+
+        # docker compose up
+        # pour lancer la compilation et démarrer les conteneurs : 
+        # docker compose -f docker-compose.dev.yml up
+        # si on a fait une modification dans les fichers js et package.json faut lancer la compilation --build
+        # docker compose -f docker-compose.dev.yml up --build
